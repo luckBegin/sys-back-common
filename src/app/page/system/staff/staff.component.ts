@@ -10,7 +10,7 @@ import { DepartService, RoleService, ShopService, SysMenuService } from '../../.
 import { NzTreeComponent } from 'ng-zorro-antd';
 import { Before, CombineAll } from '../../../../decorators/function.decorator';
 import { Observable } from 'rxjs';
-
+import * as md5 from 'md5' ;
 @Component({
 	selector: 'sys-staff',
 	templateUrl: './staff.component.html',
@@ -218,6 +218,7 @@ export class StaffComponent implements OnInit {
 	makeNew($event: Event, selectKeys: string[]): void {
 		const value = this.form.value;
 		value['departIds'] = selectKeys;
+		value.password =  md5(value.password) ;
 		this.service.post(value)
 			.subscribe((res: RESPONSE) => {
 				this.msg.notifySuccess('新建管理员成功', `用户名为: ${value.username} , 密码:${value.password}`);
@@ -247,7 +248,7 @@ export class StaffComponent implements OnInit {
 			"name": value.name,
 			"remark": value.remark,
 			"phoneNumber": value.phoneNumber ,
-			"password": "123123",
+			"password": value.password ? md5(value.password) : md5('123123'),
 			"roleIds": value.roleIds,
 			"shopId": value.shopId,
 			"id": value.id ,

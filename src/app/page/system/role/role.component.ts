@@ -33,7 +33,6 @@ export class RoleComponent implements OnInit {
 		'name': [ null, [Validators.required]],
 		'remark': [ null ],
 		'id': [ null ],
-		'shopId' : [ null ]
 	});
 
 	tableData = {
