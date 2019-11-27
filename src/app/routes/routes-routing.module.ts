@@ -32,6 +32,7 @@ const routes: Routes = [
 			{ path: 'gallery', loadChildren: '../page/gallery/gallery.module#GalleryModule' },
 			{ path: 'basic', loadChildren: '../page/basic/basic.module#BasicModule' },
 			{ path: 'room', loadChildren: '../page/room/room.module#RoomModule' },
+			{ path: 'goods', loadChildren: '../page/goods/goods.module#GoodsModule' },
 		],
 	},
 	// 全屏布局

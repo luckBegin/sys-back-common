@@ -39,5 +39,7 @@ const vip = {
 const basic = {
 	payment: host + '/basic/payment'
 };
-
-export const API = { system , gallery , room , vip , basic };
+const goods = {
+	classify: host + '/goods/classify'
+}
+export const API = { system , gallery , room , vip , basic , goods };

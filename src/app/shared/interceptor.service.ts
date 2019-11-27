@@ -28,7 +28,7 @@ export class HttpIntercept implements HttpInterceptor {
 		}
 
 		const loginInfo = this.sgo.get("loginInfo") ;
-		
+
 		if( loginInfo ) {
 			headers['jwt-user-id'] = loginInfo.id.toString() ;
 		}

@@ -123,10 +123,10 @@ export class UserLoginComponent implements OnDestroy {
 			.subscribe( ( res : any ) => {
 				this.loading = false ;
 				this.ss.set('loginInfo' , res.data.userInfo) ;
-		
+
 				const menuInfo = res.data.menuInfo.filter( item => item.id === 1 ) ;
 				this.ss.set("menuInfo" , menuInfo[0].children) ;
-				this.ss.set("token" , res.data.token.value) ;
+				this.ss.set("token" , res.data.token) ;
 				this.ss.set("shopInfo" , res.data.shopInfo) ;
 				this.router.navigate(['/']) ;
 				this.reuseTabService.clear();
