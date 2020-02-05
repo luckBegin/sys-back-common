@@ -41,5 +41,8 @@ const basic = {
 };
 const goods = {
 	classify: host + '/goods/classify'
-}
-export const API = { system , gallery , room , vip , basic , goods };
+};
+const business = {
+	manager: host + '/business/manager'
+};
+export const API = { system , gallery , room , vip , basic , goods, business };

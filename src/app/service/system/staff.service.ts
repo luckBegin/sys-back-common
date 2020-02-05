@@ -26,8 +26,9 @@ export class StaffService{
 	@DELETE(API.system.staff.staff)
 	delete( data : any ){};
 
-	getStaffById(id:number): Observable< RESPONSE > | any {};
-
 	@POST(API.system.staff.login  , true , '登录失败 , 原因:')
 	login( data: any): Observable< RESPONSE > | any {} ;
+
+	@GET(API.system.staff.staff + '/all')
+	all( data?: any): Observable< RESPONSE > | any {} ;
 }

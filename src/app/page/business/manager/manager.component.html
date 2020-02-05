@@ -1,0 +1,136 @@
+<page-header [title]="'销售经理列表'">
+</page-header>
+<div class="c-container">
+    <div style="margin-bottom: 20px">
+        <common-search-bar [SearchBarData]='searchBarData'>
+        </common-search-bar>
+    </div>
+    <button nz-button nzType="primary" class="c-button" (click)="add()">
+        新增
+    </button>
+    <common-table [TableData]="tableData">
+    </common-table>
+</div>
+
+<!-- model -->
+<nz-modal [nzVisible]="isVisible" [nzTitle]="refuseTitle" [nzContent]="refuseContent" [nzFooter]="refuseFooter"
+          (nzOnCancel)="isVisible = false">
+    <ng-template #refuseTitle>
+        确认删除?
+    </ng-template>
+
+    <ng-template #refuseContent>
+        <div class="c-flex-row-start">
+            <i nz-icon type="info-circle" theme="outline" class="modal-icon icon-error"></i>
+            <p style="margin : 0 ; padding: 0">
+                一旦删除 , 并且数据不可恢复
+            </p>
+        </div>
+    </ng-template>
+
+    <ng-template #refuseFooter>
+        <button nz-button nzType="default" (click)="isVisible = false">取消</button>
+        <button nz-button nzType="primary" (click)="modalConfirm($event)">确定</button>
+    </ng-template>
+</nz-modal>
+
+<!-- form -->
+<nz-modal [(nzVisible)]="infoBoxShow" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter"
+          (nzOnCancel)="infoBoxShow = false">
+    <ng-template #modalTitle>
+        <span *ngIf='!editMark'>
+          新增
+        </span>
+        <span *ngIf='editMark'>
+		  编辑
+		</span>
+    </ng-template>
+    <ng-template #modalContent>
+        <form nz-form [nzLayout]="'inline'" [formGroup]="form">
+            <nz-form-item class='c-formSec'>
+                <nz-form-label [nzSm]="6" nzRequired nzFor="typeId">
+                    姓名
+                </nz-form-label>
+                <nz-form-control [nzSm]="17" [nzOffset]='1'>
+                    <nz-select [ngModel]="staffModel"
+                           [ngModelOptions]="{standalone: true}"
+                           nzShowSearch nzPlaceHolder='请选择姓名'  id="name" (ngModelChange)="staffChange($event)"
+                    >
+                        <nz-option
+                                *ngFor='let item of ENUM_Staffs;'
+                                [nzValue]="item"
+                                [nzLabel]="item.key"
+                        >
+                        </nz-option>
+                    </nz-select>
+                    <nz-form-explain *ngIf="form.get('name').dirty && form.get('name').errors">
+					  <span>
+						  赠送等级为空
+					  </span>
+                    </nz-form-explain>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item class='c-formSec'>
+                <nz-form-label [nzSm]="6" nzRequired nzFor="monthLimit">
+                    月限额度
+                </nz-form-label>
+                <nz-form-control [nzSm]="17" [nzOffset]='1'>
+                    <input type="number" nz-input formControlName="monthLimit" id="monthLimit" placeholder="请输入月限额度">
+                    <nz-form-explain *ngIf="form.get('monthLimit').dirty && form.get('monthLimit').errors">
+					<span>
+						月限额度不能为空
+					</span>
+                    </nz-form-explain>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item class='c-formSec'>
+                <nz-form-label [nzSm]="6" nzRequired nzFor="monthLimit">
+                    日限额度
+                </nz-form-label>
+                <nz-form-control [nzSm]="17" [nzOffset]='1'>
+                    <input type="number" nz-input formControlName="dailyLimit" id="dailyLimit" placeholder="请输入日限额度">
+                    <nz-form-explain *ngIf="form.get('dailyLimit').dirty && form.get('dailyLimit').errors">
+					<span>
+						日限额度不能为空
+					</span>
+                    </nz-form-explain>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item class='c-formSec'>
+                <nz-form-label [nzSm]="6" nzRequired nzFor="typeId">
+                    赠送等级
+                </nz-form-label>
+                <nz-form-control [nzSm]="17" [nzOffset]='1'>
+                    <nz-select nzPlaceHolder='请选择赠送等级' formControlName="level" id="level">
+                        <nz-option
+                                *ngFor='let item of ENUM_level;'
+                                [nzValue]="item.value"
+                                [nzLabel]="item.key"
+                        >
+                        </nz-option>
+                    </nz-select>
+                    <nz-form-explain *ngIf="form.get('level').dirty && form.get('level').errors">
+					  <span>
+						  赠送等级为空
+					  </span>
+                    </nz-form-explain>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-template>
+
+    <ng-template #modalFooter>
+        <button nz-button nzType="primary" *ngIf='!editMark' [disabled]="!form.valid" (click)='makeNew($event)'>
+            确定
+        </button>
+        <button nz-button nzType="primary" *ngIf='editMark' [disabled]="!form.valid" (click)='save($event)'>
+            保存
+        </button>
+        <button nz-button nzType="default" (click)='infoBoxShow = false'>
+            关闭
+        </button>
+    </ng-template>
+</nz-modal>
