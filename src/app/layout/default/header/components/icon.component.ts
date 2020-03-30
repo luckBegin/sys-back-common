@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
-  selector: 'header-icon',
-  template: `
+	selector: 'header-icon',
+	template: `
   <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" (nzVisibleChange)="change()">
     <div class="alain-default__nav-item" nz-dropdown>
       <i class="anticon anticon-appstore-o"></i>
@@ -49,9 +49,9 @@ import { Component } from '@angular/core';
   `,
 })
 export class HeaderIconComponent {
-  loading = true;
+	loading = true;
 
-  change() {
-    setTimeout(() => (this.loading = false), 500);
-  }
+	change() {
+		setTimeout(() => (this.loading = false), 500);
+	}
 }

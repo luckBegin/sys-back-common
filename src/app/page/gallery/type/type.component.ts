@@ -52,8 +52,8 @@ export class TypeComponent implements OnInit {
 					return DateUtils.format( val.createTime , 'y-m-d') ;
 			}},
 			{ title: '备注', type: 'text', filter: (val) => {
-					return val.remark ? val.remark : "无" ;
-				}},
+				return val.remark ? val.remark : "无" ;
+			}},
 		],
 		data: [],
 		btn: {

@@ -106,7 +106,7 @@ export class HeaderUserComponent {
 		return new Observable(obsr => {
 			const value = this.form.value;
 
-			if ( value.password != value.passwordAgain ) {
+			if (value.password != value.passwordAgain) {
 				this.msg.warn("两次输入的密码不一致");
 				return;
 			}

@@ -4,7 +4,7 @@ export interface RESPONSE {
 	message: string;
 	code: number;
 	page: Page;
-	timeStamp: number ;
+	timeStamp: number;
 };
 
 interface Page {

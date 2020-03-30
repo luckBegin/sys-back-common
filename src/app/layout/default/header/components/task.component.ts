@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
-  selector: 'header-task',
-  template: `
+	selector: 'header-task',
+	template: `
   <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" (nzVisibleChange)="change()">
     <div class="alain-default__nav-item" nz-dropdown>
       <nz-badge [nzDot]="true">
@@ -68,9 +68,9 @@ import { Component } from '@angular/core';
   `,
 })
 export class HeaderTaskComponent {
-  loading = true;
+	loading = true;
 
-  change() {
-    setTimeout(() => (this.loading = false), 500);
-  }
+	change() {
+		setTimeout(() => (this.loading = false), 500);
+	}
 }

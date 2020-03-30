@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { GLOBAL_CONFIG } from '@shared/GLOBAL.config';
+import {Component} from '@angular/core';
+import {GLOBAL_CONFIG} from '@shared/GLOBAL.config';
 
 @Component({
 	selector: 'layout-passport',
@@ -8,5 +8,5 @@ import { GLOBAL_CONFIG } from '@shared/GLOBAL.config';
 })
 export class LayoutPassportComponent {
 	title: string = GLOBAL_CONFIG.title;
-	subTitle: string = GLOBAL_CONFIG.subTitle ;
+	subTitle: string = GLOBAL_CONFIG.subTitle;
 }
