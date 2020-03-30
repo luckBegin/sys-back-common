@@ -88,7 +88,8 @@ export class MenuComponent implements OnInit {
 		this.form.patchValue(this.currentItem.origin);
 
 		let controlArr = < FormArray >this.form.controls['menuDescriptionVOS'] ;
-		controlArr.patchValue(this.currentItem.origin.menuDescriptions) ;
+		if( controlArr )
+			controlArr.patchValue(this.currentItem.origin.menuDescriptions) ;
 	};
 
 	del(): void {

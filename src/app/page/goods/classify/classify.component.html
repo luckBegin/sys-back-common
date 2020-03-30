@@ -48,13 +48,13 @@
 		<form nz-form [nzLayout]="'inline'" [formGroup]="form">
 			<nz-form-item class='c-formSec'>
 				<nz-form-label [nzSm]="6" nzRequired nzFor="name">
-					店名
+					分类名称
 				</nz-form-label>
 				<nz-form-control [nzSm]="17" [nzOffset]='1'>
-					<input nz-input formControlName="name" id="name" placeholder="请输入店名">
+					<input nz-input formControlName="name" id="name" placeholder="请输入分类名称">
 					<nz-form-explain *ngIf="form.get('name').dirty && form.get('name').errors">
 					<span>
-						店名不能为空
+						分类名称不能为空
 					</span>
 					</nz-form-explain>
 				</nz-form-control>
@@ -65,7 +65,7 @@
 					备注
 				</nz-form-label>
 				<nz-form-control [nzSm]="17" [nzOffset]='1'>
-					<textarea nz-input formControlName="remark" id="remark" cols="10" rows="10"></textarea>
+					<input nz-input formControlName="remark" id="remark" placeholder="请输入备注">
 				</nz-form-control>
 			</nz-form-item>
 		</form>

@@ -40,7 +40,9 @@ const basic = {
 	payment: host + '/basic/payment'
 };
 const goods = {
-	classify: host + '/goods/classify'
+	classify: host + '/goods/classify' ,
+	subClassify: host + '/goods/subClassify' ,
+	childClassify: host + '/goods/childClassify' ,
 };
 const business = {
 	manager: host + '/business/manager'

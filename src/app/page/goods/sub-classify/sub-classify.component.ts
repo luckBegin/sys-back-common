@@ -1,25 +1,27 @@
 import { Component , OnInit } from '@angular/core';
 import {MsgService} from "../../../service";
-import {DateUtils} from '@shared/utils';
+import {AdaptorUtils, DateUtils} from '@shared/utils';
 import { QueryModel } from './query.model'
-import {RESPONSE} from '../../../models';
-import {GoodsClassifyService} from '../../../service/goods';
+import {ENUM, RESPONSE} from '../../../models';
+import {GoodsClassifyService, GoodsSubClassifyService} from '../../../service/goods';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Service} from '../../../../decorators/service.decorator';
 @Component({
 	selector: 'goods-classify' ,
-	templateUrl: './classify.component.html',
-	styleUrls: ['./classify.component.less']
+	templateUrl: './sub-classify.component.html',
+	styleUrls: ['./sub-classify.component.less']
 })
-export class GoodsClassifyComponent implements OnInit{
+export class GoodsSubClassifyComponent implements OnInit{
 	constructor(
 		private readonly msg: MsgService,
-		private readonly service: GoodsClassifyService,
+		private readonly service: GoodsSubClassifyService,
+		private readonly classifySer: GoodsClassifyService ,
 		private readonly fb: FormBuilder
 	){}
 
 	ngOnInit(): void {
 		this.getList() ;
+		this.enums() ;
 	}
 
 	private queryModel: QueryModel = new QueryModel ;
@@ -33,6 +35,13 @@ export class GoodsClassifyComponent implements OnInit{
 		total: 0,
 		columns: [
 			{ title: '名称', type: 'text', reflect: 'name' },
+			{ title: '所属类目', type: 'text', filter: val => {
+				const item = this.enum_classify.find( item => item.value === val.classifyId.toString() ) ;
+				return item ? item.key : '未知' ;
+			}},
+			{ title: '是否电子券用品', type: 'text', filter: (val) => val.isCoupon === 1? "是" : "否"  },
+			{ title: '是否计入销售经理业绩', type: 'text', filter: (val) => val.isBusiness === 1? "是" : "否"  },
+			{ title: '是否线上点单', type: 'text', filter: (val) => val.isOnline === 1? "是" : "否"  },
 			{ title: '备注', type: 'text', reflect: 'remark' },
 			{ title: '店铺', type: 'text', filter: val => val.shopInfo.name },
 			{ title: "创建时间" , type: 'text' , filter: ( val ) => {
@@ -46,6 +55,11 @@ export class GoodsClassifyComponent implements OnInit{
 				type: 'edit',
 				title: '编辑',
 				fn: (data) => {
+					data.classifyId = data.classifyId.toString() ;
+					data.isCoupon = data.isCoupon.toString() ;
+					data.isBusiness = data.isBusiness.toString() ;
+					data.isOnline = data.isOnline.toString() ;
+
 					this.form.patchValue( data ) ;
 					this.editMark = true ;
 					this.infoBoxShow = true ;
@@ -91,12 +105,16 @@ export class GoodsClassifyComponent implements OnInit{
 
 	public form: FormGroup = this.fb.group({
 		name : [ null , [ Validators.required ]],
-		remark : [ null ] ,
-		id : [ null ]
+		classifyId: [ null , [ Validators.required ]],
+		remark: [null] ,
+		isCoupon: [ null , [ Validators.required ]],
+		isBusiness: [ null , [ Validators.required ]],
+		isOnline: [ null , [ Validators.required ]],
+		id: [null]
 	});
 
 	@Service('service.delete', true, function(){
-		return (this as GoodsClassifyComponent).form.value ;
+		return (this as GoodsSubClassifyComponent).form.value ;
 	})
 	modalConfirm($event: Event) {
 		this.msg.success('删除成功');
@@ -105,7 +123,7 @@ export class GoodsClassifyComponent implements OnInit{
 	};
 
 	@Service("service.post" , true , function(){
-		return (this as GoodsClassifyComponent).form.value ;
+		return (this as GoodsSubClassifyComponent).form.value ;
 	})
 	makeNew( $event : MouseEvent ): void{
 		this.msg.success("添加成功") ;
@@ -114,11 +132,22 @@ export class GoodsClassifyComponent implements OnInit{
 	};
 
 	@Service("service.put" , true , function(){
-		return (this as GoodsClassifyComponent).form.value ;
+		return (this as GoodsSubClassifyComponent).form.value ;
 	})
 	save( $event : MouseEvent ): void{
 		this.msg.success("修改成功");
 		this.infoBoxShow = false ;
 		this.getList() ;
 	};
+
+	enum_classify: ENUM[] = [] ;
+	enums(): void {
+		this.classifySer.all()
+			.subscribe( (res:RESPONSE) => {
+				this.enum_classify = AdaptorUtils.reflect( res.data , {
+					id: 'value' ,
+					name: 'key'
+				});
+			})
+	}
 }
