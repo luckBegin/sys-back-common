@@ -8,10 +8,10 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Service} from '../../../../decorators/service.decorator';
 @Component({
 	selector: 'goods-classify' ,
-	templateUrl: './classify.component.html',
-	styleUrls: ['./classify.component.less']
+	templateUrl: './sub-classify.component.html',
+	styleUrls: ['./sub-classify.component.less']
 })
-export class GoodsClassifyComponent implements OnInit{
+export class GoodsSubClassifyComponent implements OnInit{
 	constructor(
 		private readonly msg: MsgService,
 		private readonly service: GoodsClassifyService,
@@ -96,7 +96,7 @@ export class GoodsClassifyComponent implements OnInit{
 	});
 
 	@Service('service.delete', true, function(){
-		return (this as GoodsClassifyComponent).form.value ;
+		return (this as GoodsSubClassifyComponent).form.value ;
 	})
 	modalConfirm($event: Event) {
 		this.msg.success('删除成功');
@@ -105,7 +105,7 @@ export class GoodsClassifyComponent implements OnInit{
 	};
 
 	@Service("service.post" , true , function(){
-		return (this as GoodsClassifyComponent).form.value ;
+		return (this as GoodsSubClassifyComponent).form.value ;
 	})
 	makeNew( $event : MouseEvent ): void{
 		this.msg.success("添加成功") ;
@@ -114,7 +114,7 @@ export class GoodsClassifyComponent implements OnInit{
 	};
 
 	@Service("service.put" , true , function(){
-		return (this as GoodsClassifyComponent).form.value ;
+		return (this as GoodsSubClassifyComponent).form.value ;
 	})
 	save( $event : MouseEvent ): void{
 		this.msg.success("修改成功");

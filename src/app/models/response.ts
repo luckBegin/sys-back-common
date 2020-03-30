@@ -5,10 +5,10 @@ export interface RESPONSE {
 	code: number;
 	page: Page;
 	timeStamp: number;
-};
+}
 
 interface Page {
 	pageSize: number
 	totalNumber: number
 	totalPage: number;
-};
+}
