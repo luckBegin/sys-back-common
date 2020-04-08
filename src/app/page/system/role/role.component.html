@@ -1,6 +1,12 @@
 <page-header [title]="'角色管理'">
 </page-header>
 <div class="c-container">
+
+	<div style="margin-bottom: 20px">
+		<common-search-bar [SearchBarData] = 'searchBarData'>
+		</common-search-bar>
+	</div>
+
 	<button nz-button nzType="primary" class="c-button" (click)='addNewRole() '>
 		新增
 	</button>

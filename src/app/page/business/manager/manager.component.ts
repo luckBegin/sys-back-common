@@ -100,6 +100,7 @@ export class BusinessManagerComponent implements OnInit {
 			},
 			reset: (data: QueryModel) => {
 				this.queryModel = new QueryModel;
+				this.tableData.page = 1 ;
 				this.getList();
 			},
 		}

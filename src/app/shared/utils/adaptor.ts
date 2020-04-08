@@ -59,5 +59,9 @@ export const AdaptorUtils = {
 		recursive(_arr, data, map);
 		return _arr;
 	},
+
+	numToStr<T>( val: T ) : string | T {
+		return val ? val.toString() : val ;
+	}
 };
 

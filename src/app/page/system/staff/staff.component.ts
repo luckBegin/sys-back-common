@@ -160,7 +160,7 @@ export class StaffComponent implements OnInit {
 		conditions: [
 			{name: '用户名', type: 'input', model: 'username', placeHolder: '请输入用户名'},
 			{name: '手机号', type: 'input', model: 'phoneNumber', placeHolder: '请输入手机号'},
-			{name: '真实姓名', type: 'input', model: 'description', placeHolder: '请输入真实姓名'}
+			{name: '真实姓名', type: 'input', model: 'name', placeHolder: '请输入真实姓名'}
 		],
 		notify: {
 			query: (data: QueryModel) => {
@@ -169,6 +169,7 @@ export class StaffComponent implements OnInit {
 			},
 			reset: (data: QueryModel) => {
 				this.queryModel = new QueryModel;
+				this.tableData.page = 1 ;
 				this.getStaffList();
 			},
 		}

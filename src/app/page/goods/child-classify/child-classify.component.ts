@@ -1,21 +1,21 @@
 import { Component , OnInit } from '@angular/core';
 import {MsgService} from "../../../service";
-import {AdaptorUtils, DateUtils} from '@shared/utils';
+import {AdaptorUtils, DateUtils, ObjectUtils} from '@shared/utils';
 import { QueryModel } from './query.model'
 import {ENUM, RESPONSE} from '../../../models';
-import {GoodsClassifyService, GoodsSubClassifyService} from '../../../service/goods';
+import {GoodsSubClassifyService , GoodsChildClassifyService} from '../../../service/goods';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Service} from '../../../../decorators/service.decorator';
 @Component({
 	selector: 'goods-classify' ,
-	templateUrl: './sub-classify.component.html',
-	styleUrls: ['./sub-classify.component.less']
+	templateUrl: './child-classify.component.html',
+	styleUrls: ['./child-classify.component.less']
 })
-export class GoodsSubClassifyComponent implements OnInit{
+export class GoodsChildClassifyComponent implements OnInit{
 	constructor(
 		private readonly msg: MsgService,
-		private readonly service: GoodsSubClassifyService,
-		private readonly classifySer: GoodsClassifyService ,
+		private readonly classifySer: GoodsSubClassifyService,
+		private readonly service: GoodsChildClassifyService,
 		private readonly fb: FormBuilder
 	){}
 
@@ -31,19 +31,22 @@ export class GoodsSubClassifyComponent implements OnInit{
 
 	public tableData = {
 		loading: true,
-		page: 1,
+		page: this.queryModel.currentPage,
 		total: 0,
 		columns: [
 			{ title: '名称', type: 'text', reflect: 'name' },
-			{ title: '所属类目', type: 'text', filter: val => {
-				const item = this.enum_classify.find( item => item.value === val.classifyId.toString() ) ;
-				return item ? item.key : '未知' ;
-			}},
-			{ title: '是否电子券用品', type: 'text', filter: (val) => val.isCoupon === 1? "是" : "否"  },
-			{ title: '是否计入销售经理业绩', type: 'text', filter: (val) => val.isBusiness === 1? "是" : "否"  },
-			{ title: '是否线上点单', type: 'text', filter: (val) => val.isOnline === 1? "是" : "否"  },
-			{ title: '备注', type: 'text', reflect: 'remark' },
-			{ title: '店铺', type: 'text', filter: val => val.shopInfo.name },
+			{ title: '排序', type: 'text', reflect: 'sort' },
+			{ title: '单位', type: 'text', reflect: 'unit' },
+			{ title: '价格', type: 'text', reflect: 'price' },
+			{ title: '成本', type: 'text', reflect: 'cost' },
+			{ title: '提成比列', type: 'text', filter: val => val.bonusPercent + '%'},
+			{ title: '提成金额', type: 'text', reflect: 'bonusNum' },
+			{ title: '是否线上', type: 'text', filter: (val) => val.isOnline === 1? "是" : "否"},
+			{ title: '兑换所需积分', type: 'text', filter: (val) => val.exchange === 1? "是" : "否" },
+			{ title: '赠送等级', type: 'text', reflect: 'level' },
+			{ title: '是否套餐', type: 'text' , filter: (val) => val.isPackage === 1? "是" : "否"},
+			{ title: '是否配送', type: 'text', filter: (val) => val.isDelivery === 1? "是" : "否"  },
+			{ title: '封面', type: 'img', reflect: 'img' },
 			{ title: "创建时间" , type: 'text' , filter: ( val ) => {
 				return DateUtils.format( val.createTime , 'y-m-d') ;
 			}},
@@ -55,11 +58,10 @@ export class GoodsSubClassifyComponent implements OnInit{
 				type: 'edit',
 				title: '编辑',
 				fn: (data) => {
-
-					data.classifyId = AdaptorUtils.numToStr(data.classifyId) ;
-					data.isCoupon = AdaptorUtils.numToStr(data.isCoupon) ;
-					data.isBusiness = AdaptorUtils.numToStr(data.isBusiness) ;
-					data.isOnline = AdaptorUtils.numToStr(data.isOnline) ;
+					data.subClassifyId = AdaptorUtils.numToStr( data.subClassifyId ) ;
+					data.isOnline =  AdaptorUtils.numToStr(data.isOnline ) ;
+					data.isPackage = AdaptorUtils.numToStr(data.isPackage ) ;
+					data.isDelivery = AdaptorUtils.numToStr(data.isDelivery ) ;
 
 					this.form.patchValue( data ) ;
 					this.editMark = true ;
@@ -84,6 +86,23 @@ export class GoodsSubClassifyComponent implements OnInit{
 		},
 	};
 
+	searchBarData = {
+		conditions: [
+			{name: '商品名称', type: 'input', model: 'name', placeHolder: '请输入用户名'},
+		],
+		notify: {
+			query: (data: QueryModel) => {
+				this.queryModel = ObjectUtils.extend(this.queryModel, data) as QueryModel;
+				this.getList();
+			},
+			reset: (data: QueryModel) => {
+				this.queryModel = new QueryModel;
+				this.tableData.page = 1 ;
+				this.getList();
+			},
+		}
+	};
+
 	public getList(): void{
 		this.tableData.loading = true ;
 		this.service.get( this.queryModel )
@@ -106,16 +125,26 @@ export class GoodsSubClassifyComponent implements OnInit{
 
 	public form: FormGroup = this.fb.group({
 		name : [ null , [ Validators.required ]],
-		classifyId: [ null , [ Validators.required ]],
+		subClassifyId: [ null , [Validators.required ]] ,
+		unit: [null , [Validators.required]],
+		price: [null , [Validators.required]],
+		bonusPercent: [null , [Validators.required]],
+		bonusNum: [null , [Validators.required]] ,
+		isOnline: [null , [Validators.required]] ,
+		level: [ null , [Validators.required]] ,
+		isPackage: [ null , [Validators.required]] ,
+		isDelivery: [ null , [Validators.required]] ,
 		remark: [null] ,
-		isCoupon: [ null , [ Validators.required ]],
-		isBusiness: [ null , [ Validators.required ]],
-		isOnline: [ null , [ Validators.required ]],
-		id: [null]
+		id: [null],
+		sort: [null],
+		cost: [ null ] ,
+		exchange: [null] ,
+		img: [ null ]
+
 	});
 
 	@Service('service.delete', true, function(){
-		return (this as GoodsSubClassifyComponent).form.value ;
+		return (this as GoodsChildClassifyComponent).form.value ;
 	})
 	modalConfirm($event: Event) {
 		this.msg.success('删除成功');
@@ -124,7 +153,7 @@ export class GoodsSubClassifyComponent implements OnInit{
 	};
 
 	@Service("service.post" , true , function(){
-		return (this as GoodsSubClassifyComponent).form.value ;
+		return (this as GoodsChildClassifyComponent).form.value ;
 	})
 	makeNew( $event : MouseEvent ): void{
 		this.msg.success("添加成功") ;
@@ -133,7 +162,7 @@ export class GoodsSubClassifyComponent implements OnInit{
 	};
 
 	@Service("service.put" , true , function(){
-		return (this as GoodsSubClassifyComponent).form.value ;
+		return (this as GoodsChildClassifyComponent).form.value ;
 	})
 	save( $event : MouseEvent ): void{
 		this.msg.success("修改成功");

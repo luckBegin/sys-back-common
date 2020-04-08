@@ -7,7 +7,7 @@ import { NzTreeComponent } from 'ng-zorro-antd';
 import { RESPONSE } from '../../../models';
 import { QueryModel } from './query.model';
 import { Service } from '../../../../decorators/service.decorator';
-import { AdaptorUtils } from '@shared/utils';
+import {AdaptorUtils, ObjectUtils} from '@shared/utils';
 import { Before, CombineAll } from '../../../../decorators/function.decorator';
 import { Observable } from 'rxjs';
 
@@ -71,6 +71,23 @@ export class RoleComponent implements OnInit {
 				this.queryModel.currentPage = size ;
 			}
 			this.getRoleList();
+		}
+	};
+
+	searchBarData = {
+		conditions: [
+			{name: '名称', type: 'input', model: 'name', placeHolder: '请输入名称'},
+		],
+		notify: {
+			query: (data: QueryModel) => {
+				this.queryModel = ObjectUtils.extend(this.queryModel, data) as QueryModel;
+				this.getRoleList();
+			},
+			reset: (data: QueryModel) => {
+				this.queryModel = new QueryModel;
+				this.tableData.page = 1 ;
+				this.getRoleList();
+			},
 		}
 	};
 
