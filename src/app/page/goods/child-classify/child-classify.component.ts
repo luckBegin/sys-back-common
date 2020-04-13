@@ -62,6 +62,7 @@ export class GoodsChildClassifyComponent implements OnInit{
 					data.isOnline =  AdaptorUtils.numToStr(data.isOnline ) ;
 					data.isPackage = AdaptorUtils.numToStr(data.isPackage ) ;
 					data.isDelivery = AdaptorUtils.numToStr(data.isDelivery ) ;
+					data.level = AdaptorUtils.numToStr(data.level) ;
 
 					this.form.patchValue( data ) ;
 					this.editMark = true ;

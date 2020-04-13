@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MsgService , ShopService } from '../../../service';
 import { ENUM, RESPONSE } from '../../../models';
-import { AdaptorUtils, DateUtils, ObjectUtils, RegUtils } from '@shared/utils';
+import {AdaptorUtils, DateUtils, FileUtils, ObjectUtils, RegUtils} from '@shared/utils';
 import { QueryModel } from './query.model';
 import { Service } from '../../../../decorators/service.decorator';
 import { ListService, TypeService } from '../../../service/gallery';
@@ -45,8 +45,6 @@ export class ListComponent implements OnInit {
 	editMark : boolean = false ;
 	infoBoxShow : boolean = false ;
 	isVisible: boolean = false ;
-	imgShow: boolean = false ;
-	imgSrc: string ;
 
 	tableData = {
 		loading: true,
@@ -69,10 +67,7 @@ export class ListComponent implements OnInit {
 			{ title: "创建时间" , type: 'text' , filter: ( val ) => {
 					return DateUtils.format( val.createTime , 'y-m-d') ;
 			}},
-			{ title: "小图" , type: 'img' , reflect: 'url' , fn: ( val ) => {
-				this.imgSrc = val.url ;
-				this.imgShow = true ;
-			}},
+			{ title: "小图" , type: 'img' , reflect: 'url', preview: true },
 			{ title: '备注', type: 'text', filter: (val) => {
 					return val.remark ? val.remark : "无" ;
 			}},
@@ -197,17 +192,19 @@ export class ListComponent implements OnInit {
 				formData.append('remark' , form.remark) ;
 			if( form.link)
 				formData.append('link' , form.link) ;
-			
+
+			console.log( file ) ;
 			formData.append('time' , DateUtils.getNow(true).toString() ) ;
 			formData.append('file' , file) ;
 			obsr.next( formData ) ;
 		});
 	})
 	@CombineAll()
-	makeNew( $event : MouseEvent , data: FormData ): void{
+	makeNew( $event : MouseEvent , data?: FormData ): void{
 		const el = <HTMLButtonElement>$event.target ;
-		el.disabled = true ;
+		// el.disabled = true ;
 		const input = <HTMLInputElement>document.getElementById("image") ;
+
 		this.service.post( data )
 			.subscribe( ( res: RESPONSE ) => {
 				this.msg.success("添加成功") ;
@@ -239,4 +236,16 @@ export class ListComponent implements OnInit {
 		this.isVisible = false;
 		this.getList() ;
 	};
+
+	imgSrc: string = './assets/img/add.png' ;
+	imgChange($event: MouseEvent): void {
+		const inputEle = <HTMLInputElement>$event.target;
+		const file = inputEle.files ;
+		if( !file.length ) return ;
+
+		FileUtils.fileToDataUrl( file[0] )
+			.subscribe( url => {
+				this.imgSrc = url ;
+			})
+	}
 }

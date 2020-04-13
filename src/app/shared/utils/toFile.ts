@@ -1,3 +1,5 @@
+import {Observable} from 'rxjs';
+
 export class FileUtils {
 	static CSV(data: Array<any>, columns: string[], fileName: string | number = Date.now()): void {
 		const columnStr = columns.join(',') + '\n';
@@ -22,5 +24,16 @@ export class FileUtils {
 		link.click();
 
 		link = null;
+	}
+
+	static fileToDataUrl( file: File ): Observable< string > {
+		return new Observable<string>( obsr => {
+			const fsr = new FileReader() ;
+			fsr.readAsDataURL( file ) ;
+
+			fsr.onload = ( result ) => {
+				obsr.next(result.target.result as string)
+			}
+		})
 	}
 }

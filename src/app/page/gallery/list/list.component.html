@@ -61,12 +61,15 @@
 				</nz-form-control>
 			</nz-form-item>
 
-			<nz-form-item class='c-formSec' *ngIf="!editMark">
+			<nz-form-item class='c-formSec' *ngIf="!editMark" style="height: 60px">
 				<nz-form-label [nzSm]="6" nzRequired>
 					图片
 				</nz-form-label>
 				<nz-form-control [nzSm]="17" [nzOffset]='1'>
-					<input type="file" nz-input id="image" placeholder="请选择图片">
+					<div class = 'image-upload'>
+						<img [src]="imgSrc" alt="">
+						<input (change) = 'imgChange($event)' type="file" nz-input id="image" placeholder="请选择图片">
+					</div>
 				</nz-form-control>
 			</nz-form-item>
 
@@ -147,22 +150,5 @@
 		<button nz-button nzType="default" (click)='infoBoxShow = false'>
 			关闭
 		</button>
-	</ng-template>
-</nz-modal>
-
-<nz-modal [nzVisible]="imgShow" [nzTitle]="imgShowTitle" [nzContent]="imgShowContent" [nzFooter]="imgShowFooter"
-          (nzOnCancel)="imgShow = false">
-	<ng-template #imgShowTitle>
-		查看图片
-	</ng-template>
-
-	<ng-template #imgShowContent>
-		<div class="c-flex-row-start">
-			<img [src]="imgSrc" alt="" class="c-img-res" *ngIf="imgSrc">
-		</div>
-	</ng-template>
-
-	<ng-template #imgShowFooter>
-		<button nz-button nzType="default" (click)="imgShow = false">确定</button>
 	</ng-template>
 </nz-modal>

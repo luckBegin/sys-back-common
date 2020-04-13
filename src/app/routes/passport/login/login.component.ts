@@ -133,7 +133,6 @@ export class UserLoginComponent implements OnDestroy {
 				// this.getMenu(res.data.id) ;
 				// this.startupSrv.load().then(() => this.router.navigate(['/']));
 				} , err => {
-				this.msg.error( err ) ;
 				this.loading = false ;
 			});
 

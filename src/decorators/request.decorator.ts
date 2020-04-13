@@ -47,7 +47,7 @@ export function POST(url: string, json: boolean = true, msg: string = '提交失
 	return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
 		const raw = descriptor.value;
 		descriptor.value = function (...arg) {
-			const data = DTO.create(arg[0]);
+			const data = json ? DTO.create(arg[0]) : arg[0] ;
 			const headers = new HttpHeaders();
 			if (json) {
 				headers.append('Content-type', 'application/json');
