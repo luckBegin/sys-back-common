@@ -238,6 +238,7 @@ export class ListComponent implements OnInit {
 	};
 
 	imgSrc: string = './assets/img/add.png' ;
+
 	imgChange($event: MouseEvent): void {
 		const inputEle = <HTMLInputElement>$event.target;
 		const file = inputEle.files ;
